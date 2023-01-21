@@ -2,19 +2,24 @@
 
 namespace MyProject\Controllers;
 
-use MyProject\Models\Articles\Article;
-use MyProject\Services\UsersAuthService;
+use MyProject\Handlers\GetCarsHandler;
+use MyProject\Services\Parser;
 
 class MainController extends AbstractController
 {
+    private $parser;
 
+    public function __construct(Parser $parser)
+    {
+        parent::__construct();
+
+        $this->parser = $parser;
+    }
 
     public function main()
     {
-        $articles = Article::findAll();
-        $this->view->renderHtml('main/main.php', ['articles' => $articles,
-            'user' => UsersAuthService::getUserByToken()]);
+        $cars = (new GetCarsHandler($this->parser))->getCarList();
+
+        $this->view->renderHtml('main/main.php', ['cars' => $cars]);
     }
-
-
 }

@@ -1,12 +1,31 @@
 <?php
 
+use MyProject\Controllers\MainController;
+use MyProject\Services\Parser;
+use MyProject\Services\CsvParser;
+use MyProject\Exceptions\NotFoundException;
+use MyProject\Exceptions\ForbiddenEception;
+
 try {
+    require __DIR__ . '/src/container.php';
+
     spl_autoload_register(function (string $className) {
         require_once __DIR__ . '/src/' . str_replace('\\', '/', $className) . '.php';
     });
 
     $route = $_GET['route'] ?? '';
     $routes = require __DIR__ . '/src/routes.php';
+
+    $dependencies = [
+        MainController::class => function ($container) {
+            return new MainController($container->make(Parser::class));
+        },
+        Parser::class => function ($container) {
+            return new CsvParser();
+        }
+    ];
+
+    Container::instance($dependencies);
 
     $isRouteFound = false;
     foreach ($routes as $pattern => $controllerAndAction) {
@@ -18,27 +37,20 @@ try {
 
     }
 
-
     if (!$isRouteFound) {
         throw new \MyProject\Exceptions\NotFoundException();
     }
     unset($matches[0]);
 
     $controllerName = $controllerAndAction[0];
-    $actionNmae = $controllerAndAction[1];
+    $actionName = $controllerAndAction[1];
 
-    $controller = new $controllerName();
-    $controller->$actionNmae(...$matches);
-} catch (\MyProject\Exceptions\DbException $e) {
-    $view = new \MyProject\View\View(__DIR__ . '/templates/errors');
-    $view->renderHtml('500.php', ['error' => $e->getMessage(), 500]);
-} catch (\MyProject\Exceptions\NotFoundException $e) {
+    $controller = Container::instance()->make($controllerName);
+    $controller->$actionName(...$matches);
+} catch (NotFoundException $e) {
     $view = new \MyProject\View\View(__DIR__ . '/templates/errors');
     $view->renderHtml('404.php', ['error' => $e->getMessage()], 404);
-} catch (\MyProject\Exceptions\UnauthorizedException $e) {
-    $view = new \MyProject\View\View(__DIR__ . '/templates/errors');
-    $view->renderHtml('401.php', ['error' => $e->getMessage(), 401]);
-} catch (\MyProject\Exceptions\ForbiddenEception $e) {
+} catch (ForbiddenEception $e) {
     $view = new \MyProject\View\View(__DIR__ . '/templates/errors');
     $view->renderHtml('403.php', ['error' => $e->getMessage(), 403]);
 }

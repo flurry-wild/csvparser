@@ -7,7 +7,6 @@ class View
     private $templatePath;
     private $extraVars = [];
 
-
     public function __construct(string $templatesPath)
     {
         $this->templatePath = $templatesPath;

@@ -13,7 +13,7 @@ abstract class BaseCar
     public function fill($source, $row)
     {
         foreach (static::PROPS as $propName) {
-            /** @var \MyProject\Domain\DataSource $source */
+            /** @var \MyProject\Services\DataSource $source */
             $source->setProp($this, $propName, $row);
         }
     }

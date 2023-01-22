@@ -2,10 +2,18 @@
 
 namespace MyProject\Services;
 
-use http\Exception\InvalidArgumentException;
+use MyProject\Exceptions\InvalidArgumentException;
+use Exception;
 
 class CsvParser implements Parser
 {
+    public $source;
+
+    public function __construct(CsvDataSource $dataSource)
+    {
+        $this->source = $dataSource;
+    }
+
     const MAX_STRING_LENGTH = 1000;
     const SEPARATOR = ';';
 
@@ -14,7 +22,11 @@ class CsvParser implements Parser
 
     private function init($fileName)
     {
-        $handle = fopen($fileName, 'r');
+        try {
+            $handle = @fopen($fileName, 'r');
+        } catch (Exception $e) {
+            throw new InvalidArgumentException(self::class . ':Файл ' . $fileName . ' не найдет');
+        }
 
         if ($handle == false) {
             throw new InvalidArgumentException(self::class . ':Файл ' . $fileName . ' не найдет');

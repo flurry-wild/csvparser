@@ -1,11 +1,13 @@
 <?php
 
+use MyProject\View\View;
 use MyProject\Controllers\MainController;
 use MyProject\Handlers\GetCarsHandler;
 use MyProject\Services\Parser;
 use MyProject\Services\CsvParser;
 use MyProject\Exceptions\NotFoundException;
 use MyProject\Exceptions\ForbiddenEception;
+use MyProject\Exceptions\InvalidArgumentException;
 use MyProject\Services\DataSource;
 use MyProject\Services\CsvDataSource;
 
@@ -20,14 +22,14 @@ try {
     $routes = require __DIR__ . '/src/routes.php';
 
     $dependencies = [
-        Parser::class => function ($container) {
-            return new CsvParser();
-        },
         DataSource::class => function ($container) {
             return new CsvDataSource();
         },
+        Parser::class => function ($container) {
+            return new CsvParser($container->make(CsvDataSource::class));
+        },
         GetCarsHandler::class => function ($container) {
-            return new GetCarsHandler($container->make(Parser::class), $container->make(DataSource::class));
+            return new GetCarsHandler($container->make(Parser::class));
         },
         MainController::class => function ($container) {
             return new MainController($container->make(GetCarsHandler::class));
@@ -57,9 +59,12 @@ try {
     $controller = Container::instance()->make($controllerName);
     $controller->$actionName(...$matches);
 } catch (NotFoundException $e) {
-    $view = new \MyProject\View\View(__DIR__ . '/templates/errors');
+    $view = new View(__DIR__ . '/templates/errors');
     $view->renderHtml('404.php', ['error' => $e->getMessage()], 404);
 } catch (ForbiddenEception $e) {
-    $view = new \MyProject\View\View(__DIR__ . '/templates/errors');
+    $view = new View(__DIR__ . '/templates/errors');
     $view->renderHtml('403.php', ['error' => $e->getMessage(), 403]);
+} catch (InvalidArgumentException $e) {
+    $view = new View(__DIR__ . '/templates/errors');
+    $view->renderHtml('500.php', ['error' => $e->getMessage()], 500);
 }

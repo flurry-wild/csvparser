@@ -6,7 +6,8 @@ use MyProject\Exceptions\InvalidArgumentException;
 
 class Truck extends BaseCar
 {
-    const PROPS = ['brand', 'passengerSeatsCount', 'photoFileName', 'carrying'];
+    const PROPS = ['brand', 'photoFileName', 'carrying'];
+    const FLOAT_VALUES = ['carrying'];
 
     public $type = 'truck';
     public $body;

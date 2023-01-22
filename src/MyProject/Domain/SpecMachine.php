@@ -4,6 +4,7 @@ namespace MyProject\Domain;
 
 class SpecMachine extends BaseCar
 {
-    const PROPS = ['brand', 'passengerSeatsCount', 'photoFileName', 'carrying', 'extra'];
+    const PROPS = ['brand', 'photoFileName', 'carrying', 'extra'];
+    const FLOAT_VALUES = ['carrying'];
     public $type = 'specMachine';
 }

@@ -2,6 +2,7 @@
 
 namespace MyProject\Services;
 
+use MyProject\Domain\BaseCarFactory;
 use MyProject\Exceptions\InvalidArgumentException;
 use Exception;
 
@@ -66,5 +67,26 @@ class CsvParser implements Parser
         $this->close();
 
         return $this->result;
+    }
+
+    public function fillCars($data)
+    {
+        $cars = [];
+        foreach ($data as $key => $row) {
+            if ($key == 0 && $row[0] === 'car_type') {
+                continue;
+            } else {
+                try {
+                    $car = BaseCarFactory::factory($row);
+                    $car->fill($this->source, $row);
+
+                    $cars[] = $car;
+                } catch (InvalidArgumentException $e) {
+                    continue;
+                }
+            }
+        }
+
+        return $cars;
     }
 }

@@ -2,9 +2,7 @@
 
 namespace MyProject\Handlers;
 
-use MyProject\Exceptions\InvalidArgumentException;
 use MyProject\Services\Parser;
-use MyProject\Domain\BaseCarFactory;
 
 class GetCarsHandler
 {
@@ -17,30 +15,9 @@ class GetCarsHandler
 
     public function getCarList()
     {
-        $result = $this->parser->getResult('src/assets/dat.csv');
+        $result = $this->parser->getResult('src/assets/data.csv');
 
-        $cars = $this->fillCars($result);
-
-        return $cars;
-    }
-
-    private function fillCars($data)
-    {
-        $cars = [];
-        foreach ($data as $key => $row) {
-            if ($key == 0 && $row[0] === 'car_type') {
-                continue;
-            } else {
-                try {
-                    $car = BaseCarFactory::factory($row);
-                    $car->fill($this->parser->source, $row);
-
-                    $cars[] = $car;
-                } catch (InvalidArgumentException $e) {
-                    continue;
-                }
-            }
-        }
+        $cars = $this->parser->fillCars($result);
 
         return $cars;
     }

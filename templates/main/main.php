@@ -10,6 +10,7 @@
         <th scope="col">Имя файла</th>
         <th scope="col">Кузов</th>
         <th scope="col">Грузоподъемность</th>
+        <th scope="col">Описание техники</th>
       </tr>
     </thead>
     <tbody>

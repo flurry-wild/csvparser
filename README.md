@@ -1,3 +1,3 @@
 Данное тестовое создано с помощью этого репозитория путем удаления лишних деталей -<br>
-https://github.com/sergeysrabionyan/MVCBlog
+https://github.com/sergeysrabionyan/MVCBlog.<br>
 А также добавления своих.

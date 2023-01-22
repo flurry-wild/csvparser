@@ -29,6 +29,7 @@ class CsvParser implements Parser
         while (($data = fgetcsv($this->handle, self::MAX_STRING_LENGTH, self::SEPARATOR)) !== false) {
             $num = count($data);
             if ($num !== 7) {
+                $row++;
                 continue;
             }
 

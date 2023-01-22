@@ -1,6 +1,6 @@
 <?php
 
-namespace MyProject\Models;
+namespace MyProject\Domain;
 
 use MyProject\Exceptions\InvalidArgumentException;
 

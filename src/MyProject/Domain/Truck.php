@@ -1,11 +1,13 @@
 <?php
 
-namespace MyProject\Models;
+namespace MyProject\Domain;
 
 use MyProject\Exceptions\InvalidArgumentException;
 
 class Truck extends BaseCar
 {
+    const PROPS = ['brand', 'passengerSeatsCount', 'photoFileName', 'carrying'];
+
     public $type = 'truck';
     public $body;
 
@@ -17,14 +19,14 @@ class Truck extends BaseCar
         }
 
         $this->body = new Body();
-        $this->body->width = $bodyParams[0];
-        $this->body->height = $bodyParams[1];
-        $this->body->length = $bodyParams[2];
+        $this->body->width = floatval($bodyParams[0]);
+        $this->body->height = floatval($bodyParams[1]);
+        $this->body->length = floatval($bodyParams[2]);
     }
 
-    public function fill($row)
+    public function fill($source, $row)
     {
-        parent::fill($row);
+        parent::fill($source, $row);
         $this->fillBody($row[4]);
     }
 }

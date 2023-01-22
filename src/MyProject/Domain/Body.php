@@ -1,6 +1,6 @@
 <?php
 
-namespace MyProject\Models;
+namespace MyProject\Domain;
 
 class Body
 {

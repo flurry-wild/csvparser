@@ -1,10 +1,13 @@
 <?php
 
 use MyProject\Controllers\MainController;
+use MyProject\Handlers\GetCarsHandler;
 use MyProject\Services\Parser;
 use MyProject\Services\CsvParser;
 use MyProject\Exceptions\NotFoundException;
 use MyProject\Exceptions\ForbiddenEception;
+use MyProject\Services\DataSource;
+use MyProject\Services\CsvDataSource;
 
 try {
     require __DIR__ . '/src/container.php';
@@ -17,12 +20,18 @@ try {
     $routes = require __DIR__ . '/src/routes.php';
 
     $dependencies = [
-        MainController::class => function ($container) {
-            return new MainController($container->make(Parser::class));
-        },
         Parser::class => function ($container) {
             return new CsvParser();
-        }
+        },
+        DataSource::class => function ($container) {
+            return new CsvDataSource();
+        },
+        GetCarsHandler::class => function ($container) {
+            return new GetCarsHandler($container->make(Parser::class), $container->make(DataSource::class));
+        },
+        MainController::class => function ($container) {
+            return new MainController($container->make(GetCarsHandler::class));
+        },
     ];
 
     Container::instance($dependencies);

@@ -57,7 +57,7 @@ abstract class BaseCar
         }
 
         if (in_array($propName, static::IS_IMAGE)) {
-            if (preg_match("/^(.*\.(?!(jpeg|png|jpg)$))?[^.]*$/", $value)) {
+            if (!preg_match("/.*.(jpeg|png|jpg)$/", $value)) {
                 return false;
             }
         }
@@ -78,5 +78,15 @@ abstract class BaseCar
             }
             $this->$propName = $value;
         }
+    }
+
+    public function getPhotoFileExt()
+    {
+        if (empty($this->photoFileName)) {
+            return null;
+        }
+        preg_match('/.*.(jpeg|png|jpg)$/', $this->photoFileName, $ext);
+
+        return $ext[1];
     }
 }

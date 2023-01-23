@@ -26,11 +26,11 @@ class CsvParser implements Parser
         try {
             $handle = @fopen($fileName, 'r');
         } catch (Exception $e) {
-            throw new InvalidArgumentException(self::class . ':Файл ' . $fileName . ' не найдет');
+            throw new InvalidArgumentException(self::class . ':Файл ' . $fileName . ' не найден');
         }
 
         if ($handle == false) {
-            throw new InvalidArgumentException(self::class . ':Файл ' . $fileName . ' не найдет');
+            throw new InvalidArgumentException(self::class . ':Файл ' . $fileName . ' не найден');
         }
 
         $this->handle = $handle;

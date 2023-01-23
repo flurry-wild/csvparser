@@ -15,9 +15,6 @@ class Truck extends BaseCar
     private function fillBody($body)
     {
         $bodyParams = explode('x', $body);
-        if (count($bodyParams) !== 3) {
-            throw new InvalidArgumentException(self::class . ':Не удалось определить формат кузова');
-        }
 
         $this->body = new Body();
         $this->body->width = floatval($bodyParams[0]);
@@ -29,5 +26,10 @@ class Truck extends BaseCar
     {
         parent::fill($source, $row);
         $this->fillBody($row[4]);
+    }
+
+    public function getBodyVolume()
+    {
+        return $this->body->width * $this->body->height * $this->body->length;
     }
 }

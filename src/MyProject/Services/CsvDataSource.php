@@ -8,6 +8,7 @@ class CsvDataSource implements DataSource
         'brand' => 1,
         'passengerSeatsCount' => 2,
         'photoFileName' => 3,
+        'body' => 4,
         'carrying' => 5,
         'extra' => 6
     ];

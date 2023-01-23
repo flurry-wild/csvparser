@@ -2,8 +2,6 @@
 
 namespace MyProject\Domain;
 
-use MyProject\Exceptions\InvalidArgumentException;
-
 class Truck extends BaseCar
 {
     const PROPS = ['brand', 'photoFileName', 'carrying'];
@@ -25,7 +23,7 @@ class Truck extends BaseCar
     public function fill($source, $row)
     {
         parent::fill($source, $row);
-        $this->fillBody($row[4]);
+        $this->fillBody($source->getValue('body', $row));
     }
 
     public function getBodyVolume()

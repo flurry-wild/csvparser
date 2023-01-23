@@ -1,16 +1,16 @@
-<? require 'header.php' ?>
+<? require 'templates/header.php' ?>
 <div class="container">
   <h1>Табличка с автомобилями</h1>
   <table class="table">
     <thead>
       <tr>
         <th scope="col">Тип</th>
-        <th scope="col">Брэнд</th>
-        <th scope="col">Количество пассажирских мест</th>
-        <th scope="col">Имя файла</th>
+        <th scope="col">Марка</th>
+        <th scope="col">Кол-во пассажирских мест</th>
+        <th scope="col">Фото</th>
         <th scope="col">Кузов</th>
         <th scope="col">Грузоподъемность</th>
-        <th scope="col">Описание техники</th>
+        <th scope="col">Дополнительно</th>
       </tr>
     </thead>
     <tbody>
@@ -45,4 +45,4 @@
   </table>
 </div>
 
-<? require 'footer.php' ?>
+<? require 'templates/footer.php' ?>
